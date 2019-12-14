@@ -25,8 +25,10 @@
 	<div class="results"></div>
 
     <!-- Include the latest version of WebTorrent -->
-    <!--<script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>-->
-	<script src="https://cdn.jsdelivr.net/npm/webtorrent@0.107.17/webtorrent.debug.js"></script>
+    <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/buffer@5.4.3/index.min.js"></script>
+	
+	
 
     <script>
       var client = new WebTorrent()
@@ -63,7 +65,7 @@
 				log('Adding uploaded torrent file')
 				buffer['Name']='testFile'
 				buffer['name']='testFile'
-				client.add(buffer, onTorrent)
+				client.add(new Buffer(buffer), onTorrent)
 			});
 		  }
 		}
