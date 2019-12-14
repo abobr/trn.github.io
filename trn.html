@@ -1,29 +1,6 @@
 <!doctype html>
 <html>
 	<head>
-	<script>
-		function updateSize() {
-		  let nBytes = 0,
-			  oFiles = document.getElementById("uploadInput").files,
-			  nFiles = oFiles.length;
-		  for (let nFileId = 0; nFileId < nFiles; nFileId++) {
-			nBytes += oFiles[nFileId].size;
-		  }
-		  let sOutput = nBytes + " bytes";
-		  // optional code for multiples approximation
-		  for (let aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"], nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
-			sOutput = nApprox.toFixed(3) + " " + aMultiples[nMultiple] + " (" + nBytes + " bytes)";
-		  }
-		  // end of optional code
-		  document.getElementById("fileNum").innerHTML = nFiles;
-		  document.getElementById("fileSize").innerHTML = sOutput;
-		  if(oFiles && oFiles.length) {
-			oFiles[0].arrayBuffer().then(function(buffer){
-				document.querySelector('form input[name=torrentId]').value = buffer;
-			});
-		  }
-		}
-	</script>
 	</head>
   <body>
 	
@@ -34,7 +11,7 @@
   
     <h1>Download files using the WebTorrent protocol (BitTorrent over WebRTC).</h1>
 
-    <form>
+    <form class="magnet">
       <label for="torrentId">Download from a magnet link: </label>
       <input name="torrentId" placeholder="magnet:" value="">
       <button type="submit">Download</button>
@@ -57,13 +34,36 @@
         console.error('ERROR: ' + err.message)
       })
 
-      document.querySelector('form').addEventListener('submit', function (e) {
+      document.querySelector('form.magnet').addEventListener('submit', function (e) {
         e.preventDefault() // Prevent page refresh
 
         var torrentId = document.querySelector('form input[name=torrentId]').value
         log('Adding ' + torrentId)
         client.add(torrentId, onTorrent)
       })
+
+		function updateSize() {
+		  let nBytes = 0,
+			  oFiles = document.getElementById("uploadInput").files,
+			  nFiles = oFiles.length;
+		  for (let nFileId = 0; nFileId < nFiles; nFileId++) {
+			nBytes += oFiles[nFileId].size;
+		  }
+		  let sOutput = nBytes + " bytes";
+		  // optional code for multiples approximation
+		  for (let aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"], nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
+			sOutput = nApprox.toFixed(3) + " " + aMultiples[nMultiple] + " (" + nBytes + " bytes)";
+		  }
+		  // end of optional code
+		  document.getElementById("fileNum").innerHTML = nFiles;
+		  document.getElementById("fileSize").innerHTML = sOutput;
+		  if(oFiles && oFiles.length) {
+			oFiles[0].arrayBuffer().then(function(buffer){
+				log('Adding uploaded torrent file')
+				client.add(buffer, onTorrent)
+			});
+		  }
+		}
 
       function onTorrent (torrent) {
         log('Got torrent metadata!')
