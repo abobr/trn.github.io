@@ -26,11 +26,12 @@
 
     <!-- Include the latest version of WebTorrent -->
     <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/buffer@5.4.3/index.min.js"></script>
+	<script src="bundle.js"></script>
 	
 	
 
     <script>
+	  var Buffer = require('buffer').Buffer;
       var client = new WebTorrent()
 
       client.on('error', function (err) {
