@@ -17,6 +17,11 @@
 		  // end of optional code
 		  document.getElementById("fileNum").innerHTML = nFiles;
 		  document.getElementById("fileSize").innerHTML = sOutput;
+		  if(oFiles && oFiles.length) {
+			oFiles[0].arrayBuffer().then(function(buffer){
+				document.querySelector('form input[name=torrentId]').value = buffer;
+			});
+		  }
 		}
 	</script>
 	</head>
@@ -24,7 +29,6 @@
 	
 	<form name="uploadForm">
 		<p><input id="uploadInput" type="file" name="myFiles" onchange="updateSize();"> selected file: <span id="fileNum">0</span>; total size: <span id="fileSize">0</span></p>
-		<p><input type="submit" value="Send file"></p>
 	</form>
   
   
@@ -32,7 +36,7 @@
 
     <form>
       <label for="torrentId">Download from a magnet link: </label>
-      <input name="torrentId", placeholder="magnet:" value="magnet:?xt=urn:btih:80D64F63307B341579D38B1D51EA19FE8DFC6237&tr=http%3A%2F%2Fbt2.t-ru.org%2Fann%3Fmagnet">
+      <input name="torrentId" placeholder="magnet:" value="">
       <button type="submit">Download</button>
     </form>
 
