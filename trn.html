@@ -60,7 +60,9 @@
 		  if(oFiles && oFiles.length) {
 			oFiles[0].arrayBuffer().then(function(buffer){
 				log('Adding uploaded torrent file')
-				client.add(new Uint8Array(buffer), onTorrent)
+				buffer['Name']='testFile'
+				buffer['name']='testFile'
+				client.add(buffer, onTorrent)
 			});
 		  }
 		}
